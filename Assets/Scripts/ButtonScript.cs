@@ -102,7 +102,9 @@ public class ButtonScript : MonoBehaviour
         string password = inputField2.text;
         string cryptPass = AvoEx.AesEncryptor.Encrypt(password);
         //        string decText = AvoEx.AesEncryptor.Decrypt(password);
-        String sql = "SELECT * FROM LOGIN WHERE NAME = \'+name+\' AND PASSWORD = \'+cryptPass+\';";
+        String sql = "SELECT * FROM LOGIN WHERE NAME = \'"+name+"\';";
+
+        //
         MySqlCommand cmd = new MySqlCommand(sql, conn);
 
         try
