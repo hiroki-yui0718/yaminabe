@@ -600,7 +600,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 269618747}
-        m_MethodName: OnClick
+        m_MethodName: SignUpOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

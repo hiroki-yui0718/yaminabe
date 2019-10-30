@@ -45,9 +45,9 @@ public class ButtonScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
-    public void OnClick()
+    public void SignUpOnClick()
     {
         //値の取得
         inputField1 = GameObject.Find("ID-BOX").GetComponent<InputField>();
@@ -58,7 +58,7 @@ public class ButtonScript : MonoBehaviour
         string password2 = inputField3.text;
         string cryptPass = AvoEx.AesEncryptor.Encrypt(password1);
 
-//        string decText = AvoEx.AesEncryptor.Decrypt(encText); →復号化
+        //        string decText = AvoEx.AesEncryptor.Decrypt(encText); →復号化
 
 
         Debug.Log("encText = " + cryptPass);
@@ -72,9 +72,9 @@ public class ButtonScript : MonoBehaviour
             String sql = "INSERT INTO LOGIN VALUES(\'" + name + "\',\'" + cryptPass + "\');";
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             try
-            {   cmd.ExecuteNonQuery();
+            { cmd.ExecuteNonQuery();
                 SceneManager.LoadScene("Success");
-            }catch(Exception e)
+            } catch (Exception e)
             {
                 SceneManager.LoadScene("Failed");
             }
@@ -93,4 +93,34 @@ public class ButtonScript : MonoBehaviour
         }
 
     }
+    public void LoginOnClick()
+    {
+        
+        inputField1 = GameObject.Find("ID-BOX").GetComponent<InputField>();
+        string name = inputField1.text;
+        inputField2 = GameObject.Find("PASS-BOX").GetComponent<InputField>();
+        string password = inputField2.text;
+        string cryptPass = AvoEx.AesEncryptor.Encrypt(password);
+        //        string decText = AvoEx.AesEncryptor.Decrypt(password);
+        String sql = "SELECT * FROM LOGIN WHERE NAME = \'+name+\' AND PASSWORD = \'+cryptPass+\';";
+        MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+        try
+        {
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                Debug.Log(rdr[0]);
+            }
+            rdr.Close();
+            SceneManager.LoadScene("Success");
+        }
+        catch(Exception e){
+            SceneManager.LoadScene("Failed");
+        }
+
+            conn.Close();
+            Debug.Log("接続を終了しました");
+        }
+
 }
