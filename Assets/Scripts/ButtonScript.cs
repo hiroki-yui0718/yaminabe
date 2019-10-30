@@ -6,6 +6,12 @@ using UnityEngine.UI;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using UnityEngine.SceneManagement;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 public class ButtonScript : MonoBehaviour
 {
@@ -56,9 +62,7 @@ public class ButtonScript : MonoBehaviour
         string password1 = inputField2.text;
         inputField3 = GameObject.Find("Pass-Confirmation").GetComponent<InputField>();
         string password2 = inputField3.text;
-        string cryptPass = AvoEx.AesEncryptor.Encrypt(password1);
-
-        //        string decText = AvoEx.AesEncryptor.Decrypt(encText); →復号化
+        string cryptPass = AvoEx.AesEncryptor.Encrypt(password1); //暗号化
 
 
         Debug.Log("encText = " + cryptPass);
@@ -69,8 +73,14 @@ public class ButtonScript : MonoBehaviour
         }
         else
         {
-            String sql = "INSERT INTO LOGIN VALUES(\'" + name + "\',\'" + cryptPass + "\');";
+            String sql = "INSERT INTO LOGIN VALUES(\'"+@name+"\',\'"+@cryptPass+"\');";
             MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@cryptPass", cryptPass);
+
+
             try
             { cmd.ExecuteNonQuery();
                 SceneManager.LoadScene("Success");
@@ -78,15 +88,6 @@ public class ButtonScript : MonoBehaviour
             {
                 SceneManager.LoadScene("Failed");
             }
-
-
-            //            MySqlDataReader rdr = cmd.ExecuteReader();
-            //            while (rdr.Read())
-            //            {
-            //                Debug.Log(rdr[0]);
-            //            }
-            //            rdr.Close();
-            //
 
             conn.Close();
             Debug.Log("接続を終了しました");
@@ -101,21 +102,31 @@ public class ButtonScript : MonoBehaviour
         inputField2 = GameObject.Find("PASS-BOX").GetComponent<InputField>();
         string password = inputField2.text;
         string cryptPass = AvoEx.AesEncryptor.Encrypt(password);
-        //        string decText = AvoEx.AesEncryptor.Decrypt(password);
-        String sql = "SELECT * FROM LOGIN WHERE NAME = \'"+name+"\';";
 
-        //
+        
+        try{
+            String sql = "SELECT PASSWORD FROM LOGIN WHERE NAME = \'"+@name+"\';";
         MySqlCommand cmd = new MySqlCommand(sql, conn);
 
-        try
+        cmd.Parameters.AddWithValue("@name", name);
+
+
+
+        MySqlDataReader rdr = cmd.ExecuteReader();
+        rdr.Read();
+        String pass = rdr[0].ToString();
+        string decText = AvoEx.AesEncryptor.Decrypt(pass); //復号
+        if (password == decText)
         {
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            while (rdr.Read())
-            {
-                Debug.Log(rdr[0]);
-            }
-            rdr.Close();
             SceneManager.LoadScene("Success");
+        }
+        else
+        {
+
+            SceneManager.LoadScene("Failed");
+        }
+            rdr.Close();
+            
         }
         catch(Exception e){
             SceneManager.LoadScene("Failed");
@@ -124,5 +135,13 @@ public class ButtonScript : MonoBehaviour
             conn.Close();
             Debug.Log("接続を終了しました");
         }
+    public void loginScene()
+    {
+        SceneManager.LoadScene("LogIn");
+    }
+    public void signUpScene()
+    {
+        SceneManager.LoadScene("SignUp");
+    }
 
 }

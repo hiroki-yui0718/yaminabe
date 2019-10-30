@@ -280,18 +280,6 @@
     <Reference Include="MySql.Data">
       <HintPath>C:/Users/173224/Desktop/unity/Login/Assets/Plugins/MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data.EntityFramework">
-      <HintPath>C:/Users/173224/Desktop/unity/Login/Assets/Plugins/MySql.Data.EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="MySQL.Data.EntityFrameworkCore.Design">
-      <HintPath>C:/Users/173224/Desktop/unity/Login/Assets/Plugins/MySQL.Data.EntityFrameworkCore.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="MySQL.Data.EntityFrameworkCore">
-      <HintPath>C:/Users/173224/Desktop/unity/Login/Assets/Plugins/MySQL.Data.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Web">
-      <HintPath>C:/Users/173224/Desktop/unity/Login/Assets/Plugins/MySql.Web.dll</HintPath>
-    </Reference>
     <Reference Include="Renci.SshNet">
       <HintPath>C:/Users/173224/Desktop/unity/Login/Assets/Plugins/Renci.SshNet.dll</HintPath>
     </Reference>
