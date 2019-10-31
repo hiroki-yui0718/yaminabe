@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
 
 public class ButtonScript : MonoBehaviour
 {
@@ -24,6 +25,11 @@ public class ButtonScript : MonoBehaviour
     InputField inputField1;
     InputField inputField2;
     InputField inputField3;
+   public static String name = null;
+    public static String getName()
+   {
+        return name;
+    }
 
     void Start()
     {
@@ -57,7 +63,7 @@ public class ButtonScript : MonoBehaviour
     {
         //値の取得
         inputField1 = GameObject.Find("ID-BOX").GetComponent<InputField>();
-        string name = inputField1.text;
+        name = inputField1.text;
         inputField2 = GameObject.Find("PASS-BOX").GetComponent<InputField>();
         string password1 = inputField2.text;
         inputField3 = GameObject.Find("Pass-Confirmation").GetComponent<InputField>();
@@ -86,6 +92,7 @@ public class ButtonScript : MonoBehaviour
                 SceneManager.LoadScene("Success");
             } catch (Exception e)
             {
+                Debug.Log(e.ToString());
                 SceneManager.LoadScene("Failed");
             }
 
@@ -98,10 +105,9 @@ public class ButtonScript : MonoBehaviour
     {
         
         inputField1 = GameObject.Find("ID-BOX").GetComponent<InputField>();
-        string name = inputField1.text;
+        name = inputField1.text;
         inputField2 = GameObject.Find("PASS-BOX").GetComponent<InputField>();
         string password = inputField2.text;
-        string cryptPass = AvoEx.AesEncryptor.Encrypt(password);
 
         
         try{
@@ -115,7 +121,7 @@ public class ButtonScript : MonoBehaviour
         MySqlDataReader rdr = cmd.ExecuteReader();
         rdr.Read();
         String pass = rdr[0].ToString();
-        string decText = AvoEx.AesEncryptor.Decrypt(pass); //復号
+        string decText = AvoEx.AesEncryptor.DecryptString(pass); //復号
         if (password == decText)
         {
             SceneManager.LoadScene("Success");
@@ -129,6 +135,7 @@ public class ButtonScript : MonoBehaviour
             
         }
         catch(Exception e){
+            Debug.Log(e.ToString());
             SceneManager.LoadScene("Failed");
         }
 
@@ -143,5 +150,10 @@ public class ButtonScript : MonoBehaviour
     {
         SceneManager.LoadScene("SignUp");
     }
+    public void selectScene()
+    {
+        SceneManager.LoadScene("Select");
+    }
+
 
 }
